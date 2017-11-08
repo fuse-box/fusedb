@@ -1,5 +1,6 @@
-# FuseDB
+[![Build Status](https://travis-ci.org/fuse-box/fusedb.svg?branch=master)](https://travis-ci.org/fuse-box/fusedb)
 
+# FuseDB
 
 FuseDB is an ORM with traditional ActiveRecord approach, that provides a simple yet powerful API. FuseDB stores data in the filesystem ([nedb](https://github.com/louischatriot/nedb)) or MongoDB. You write your own [adapter](https://github.com/fuse-box/fusedb/blob/master/src/adapters/Adapter.ts) and implement a different database suppport.
 
