@@ -81,7 +81,6 @@ gulp.task("prepare", ["prepare:clean"], function(done) {
 });
 
 gulp.task("publish-beta", function(done) {
-
     publish(done, "alpha");
 });
 gulp.task("publish", function(done) {
