@@ -7,20 +7,17 @@ It's perfectly suitable for medium scale databases or Electron apps and takes 5 
 
 ## Setting up a connection
 
-Everything is working by default, and the files will be stored in your home folder e.g `/home/user/.fusedb` on linux or `/Users/user/.fusedb` on mac. In order to customise it, do the following
+Everything works by default, and the files will be stored in your home folder e.g `/home/user/.fusedb` on linux or `/Users/user/.fusedb` on mac. In order to customise it, do the following
 
 ```js
 import { FuseDB, FileAdapter } from "fusedb"
-
-FuseDB.setup({
-    adapter : FileAdapter({
-        path: path.join(os.homedir(), ".fusedb"),
-        database: path.dirname(process.cwd())
-    })
-});
+FuseDB.setup({ adapter : FileAdapter({ path: "/path/to/folder/", database: "test" }) });
 ```
 
-## Create a model
+## Models
+
+
+Models contain essential methods to talk to the database, methods like `save`, `find`, `remove` are reserved. Therefore we don't need any "repositories" and connection pools as everything is handled internally
 
 ```js
 import { Field, Model } from "fusedb";
