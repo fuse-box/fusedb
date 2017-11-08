@@ -118,7 +118,7 @@ await autor.save()
 ## Removing
 ```js
 const author = await Author.find({name : "john"});
-await author.remove(;)
+await author.remove()
 ```
 
 ## Validators
