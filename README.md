@@ -6,6 +6,11 @@ FuseDB is an ORM with traditional ActiveRecord approach, that provides a simple 
 
 It's perfectly suitable for medium scale databases or Electron apps and takes 5 minutes to dive in.
 
+
+Checkout this [example](https://github.com/fuse-box/fusedb-example)
+
+The project is at a very early stage of development, so please, feel free to contribute and extend the functionality. Besides, we don't have any other drivers but `nedb`. `MongoDb` Adapter is required.
+
 ## Setting up a connection
 
 Everything works by default, and the files will be stored in your home folder e.g `/home/user/.fusedb` on linux or `/Users/user/.fusedb` on mac. In order to customise it, do the following
