@@ -9,32 +9,34 @@ const stub = new Stub();
 enableDefaultDecorators();
 
 class FooBarMin extends Model<FooBarMin> {
-    @Field() @Validate({min : 3})
+    @Field() @Validate({ min: 3 })
     public name: string;
 }
 
 class FooBarMax extends Model<FooBarMin> {
-    @Field() @Validate({max : 3})
+    @Field() @Validate({ max: 3 })
     public name: string;
 }
 
 class FooBarCustom extends Model<FooBarMin> {
-    @Field() 
-    @Validate({custom : value => {
-        if ( value !== "foo"){
-            throw new Error("Value should be foo only")
+    @Field()
+    @Validate({
+        fn: value => {
+            if (value !== "foo") {
+                throw new Error("Value should be foo only")
+            }
         }
-    }})
+    })
     public name: string;
 }
 
 class FooBarRegExp extends Model<FooBarMin> {
-    @Field() @Validate({regExp : /\d{2}/})
+    @Field() @Validate({ regExp: /\d{2}/ })
     public name: string;
 }
 
 class FooBarEmail extends Model<FooBarMin> {
-    @Field() @Validate({email : true})
+    @Field() @Validate({ email: true })
     public name: string;
 }
 export class ValidationTest {
