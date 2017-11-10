@@ -20,7 +20,7 @@ const RELEASE_FOLDER = "./.release";
  */
 let filesMain = ["src/**/*.{ts,tsx}", "!./**/test/**"];
 
-const publish = (done, tag) => {
+const publish = (tag, done) => {
     var publish = spawn("npm", ["publish", "--tag", tag], {
         stdio: "inherit",
         cwd: path.join(__dirname, ".release")
@@ -81,7 +81,7 @@ gulp.task("prepare", ["prepare:clean"], function(done) {
 });
 
 gulp.task("publish-beta", function(done) {
-    publish(done, "alpha");
+    publish("next", done);
 });
 gulp.task("publish", function(done) {
     return runSequence("prepare", "publish-beta", done)
