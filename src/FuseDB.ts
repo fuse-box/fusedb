@@ -89,7 +89,7 @@ export class FuseDB {
         }
         const response = await adapter.create(this.schema.name, this.schema.toDatabase(this.model))
         this.assignProps(response);
-        return Promise.resolve();
+        return Promise.resolve(response);
     }
 
     public assignProps(props?: any) {
