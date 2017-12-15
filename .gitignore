@@ -61,3 +61,4 @@ typings/
 .release
 .fusebox
 .vscode
+dist/

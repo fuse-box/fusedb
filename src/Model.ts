@@ -19,8 +19,14 @@ export class Model<T> {
         return this.$fusedb.saveRecord() as Promise<Model<T>>;
     }
 
+
     public async remove(): Promise<number> {
         return this.$fusedb.remove();
+    }
+
+    public static drop<T>(opts?: any): Promise<boolean> {
+        const Cls = new this();
+        return Cls.$fusedb.drop();
     }
 
     public static find<T>(opts?: any): ActiveQuery<T> {

@@ -106,7 +106,17 @@ export class FileAdapterImpl implements IAdapter {
         });
     }
 
-    drop(collection: string): Promise<number> {
-        throw new Error("Method not implemented.");
+    async drop(collection: string): Promise<number> {
+        const db = await this.getConnection(collection);
+        return new Promise<number>((resolve, reject) => {
+            db.remove({}, { multi: true }, (err, removed: number) => {
+                db.loadDatabase(err => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    return resolve(removed)
+                })
+            });
+        });
     }
 }

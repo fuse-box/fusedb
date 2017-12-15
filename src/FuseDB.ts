@@ -6,6 +6,7 @@ import * as os from "os";
 import * as path from "path"
 import { ActiveQuery } from "./ActiveQuery";
 import { SubQuery } from './SubQuery';
+import { fastHash } from './Utils';
 
 
 
@@ -42,6 +43,12 @@ export class FuseDB {
 
     public find(opts: any): ActiveQuery<any> {
         return new ActiveQuery(opts, this) as any
+    }
+
+    public async drop(): Promise<boolean> {
+        const adapter = this.getAdapter();
+        await adapter.drop(this.schema.name)
+        return true;
     }
 
     public async query(query: ActiveQuery<any>): Promise<any[]> {
@@ -112,7 +119,7 @@ export class FuseDB {
 export let Config: Options = {
     adapter: FileAdapter({
         path: path.join(os.homedir(), ".fusedb"),
-        database: path.dirname(process.cwd())
+        database: fastHash(path.dirname(process.cwd())).toString()
     })
 }
 
