@@ -8,7 +8,7 @@ export function extractValidatorPropeties(props: any, defaultMessage?: string): 
             result.value = props.value;
         }
         if (props.message !== undefined) {
-            result.message = props.messages;
+            result.message = props.message;
         }
     }
     return result;
