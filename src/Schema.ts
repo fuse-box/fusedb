@@ -74,6 +74,9 @@ export class Schema {
         let items = [];
         for (let item of values) {
             const instance = this.createInstance(item);
+            if (instance["onFetched"]) {
+                instance["onFetched"](item);
+            }
             items.push(instance);
         }
         return items;
