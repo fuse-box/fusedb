@@ -4,5 +4,6 @@ export function enableDefaultDecorators() {
     require("./FnValidator");
     require("./RegExpValidator");
     require("./EmailValidator");
+    require("./EnumValidator");
 }
 

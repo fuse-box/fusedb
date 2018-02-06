@@ -185,6 +185,23 @@ class FooBarRegExp extends Model<FooBarRegExp> {
 }
 ```
 
+### Enum Validator
+
+```js
+const seasons = {
+    SUMMER: 'summer',
+    WINTER: 'winter',
+    SPRING: 'spring'
+}
+```
+
+```js
+class FooBarEnum extends Model<FooBarEnum> {
+    @Field() @Validate({enum : seasons})
+    public season: string;
+}
+```
+
 ### Function validator
 
 ```js
