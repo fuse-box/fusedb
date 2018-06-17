@@ -124,6 +124,25 @@ const author = await Author.find({name : "john"});
 await author.remove()
 ```
 
+## Model event hooks
+
+Defining the following hooks will allow you to intercept model events
+
+```ts
+export class Foo extends Model<Foo> {
+    @Field()
+    public name: string;
+    // before updating or creating a record
+    async onBeforeSave() {}
+    // after creating or updating a record
+    async onAfterSave() {}
+    // before updating a record
+    async onBeforeUpdate() {}
+    // after creating a record
+    async onBeforeCreate() {}
+}
+```
+
 ## Validators
 
 Validators in FuseDb are quite easy to use and implement. The framework offers a few default validators, 

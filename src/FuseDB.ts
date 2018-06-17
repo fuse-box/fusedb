@@ -16,6 +16,7 @@ export interface Options {
 
 export class FuseDB {
     public schema: Schema;
+    public serializer: string;
     constructor(public model: Model<any>) {
         this.schema = model["$schema"];
     }
@@ -28,11 +29,30 @@ export class FuseDB {
         return Config.adapter
     }
 
-    public saveRecord(): Promise<any> {
-        if (this.model["_id"] !== undefined) {
-            return this.updateRecord();
+    public async saveRecord(): Promise<any> {
+        if (typeof this.model['onBeforeSave'] === "function") {
+            await this.model['onBeforeSave']();
         }
-        return this.createRecord();
+
+        if (this.model["_id"] !== undefined) {
+            if (typeof this.model['onBeforeUpdate'] === "function") {
+                await this.model['onBeforeUpdate']();
+            }
+            const record = this.updateRecord();
+            if (typeof this.model['onAfterSave'] === "function") {
+                await this.model['onAfterSave']();
+            }
+            return record;
+        }
+        if (typeof this.model['onBeforeCreate'] === "function") {
+            await this.model['onBeforeCreate']();
+        }
+        const record = await this.createRecord();
+
+        if (typeof this.model['onAfterSave'] === "function") {
+            await this.model['onAfterSave']();
+        }
+        return record;
     }
 
     public async updateRecord(): Promise<any> {
