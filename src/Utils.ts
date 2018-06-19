@@ -53,7 +53,9 @@ export function ensureDatabaseCorrectValues(value: any) {
             return ObjectID(value);
         }
     }
+
     if (value instanceof Model) {
+
         return value._id;
     } else {
         if (utils.isArray(value)) {

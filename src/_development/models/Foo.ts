@@ -1,7 +1,6 @@
 import { Model, Field } from '../../index';
 
 
-
 export class Foo extends Model<Foo> {
     @Field()
     public name: string;
@@ -17,10 +16,15 @@ export class Foo extends Model<Foo> {
 
 
     async onBeforeSave() {
-        console.log("here");
+
     }
 
-    serialize(props) {
-        console.log("assign", props);
-    }
+}
+
+export class Bar extends Model<Bar>{
+    @Field()
+    public name: string;
+
+    @Field()
+    public foo: Foo;
 }

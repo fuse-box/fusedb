@@ -60,7 +60,7 @@ export class FuseDB {
     public async updateRecord(): Promise<any> {
         const adapter = this.getAdapter();
         const response = await adapter.update(this.schema.name, this.model["_id"], this.schema.toDatabase(this.model));
-        return Promise.resolve(this.model);
+        return this.model;
     }
 
     public find(opts: any): ActiveQuery<any> {
@@ -118,11 +118,10 @@ export class FuseDB {
         }
         const response = await adapter.create(this.schema.name, this.schema.toDatabase(this.model))
         this.assignProps(response);
-        return Promise.resolve(response);
+        return this.model;
     }
 
     public assignProps(props?: any) {
-
         if (typeof props === "object") {
             for (let key in props) {
                 let value = props[key];
