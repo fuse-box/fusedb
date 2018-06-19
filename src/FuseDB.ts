@@ -146,6 +146,8 @@ export class FuseDB {
                     const hasToJson = typeof props.toJSON === "function";
                     json[key] = hasToJson ? props.toJSON(this.model[key]) : this.model[key]
                 }
+            } else {
+                json[key] = this.model[key];
             }
         }
         return json;
