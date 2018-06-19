@@ -23,6 +23,8 @@ export class FuseDB {
 
     public static setup(opts: Options) {
         Config.adapter = opts.adapter;
+        Config.adapter.close();
+
     }
 
     public getAdapter(): IAdapter {

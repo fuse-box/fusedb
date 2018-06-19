@@ -9,15 +9,32 @@ It's perfectly suitable for medium scale databases or Electron apps and takes 5 
 
 Checkout this [example](https://github.com/fuse-box/fusedb-example)
 
-The project is at a very early stage of development, so please, feel free to contribute and extend the functionality. Besides, we don't have any other drivers but `nedb`. `MongoDb` Adapter is required.
 
 ## Setting up a connection
 
 Everything works by default, and the files will be stored in your home folder e.g `/home/user/.fusedb` on linux or `/Users/user/.fusedb` on mac. In order to customise it, do the following
 
+### File database 
 ```js
 import { FuseDB, FileAdapter } from "fusedb"
-FuseDB.setup({ adapter : FileAdapter({ path: "/path/to/folder/", database: "test" }) });
+FuseDB.setup({ adapter : 
+    FileAdapter({ path: "/path/to/folder/", database: "test" }) });
+```
+
+### MongoDB database
+Install mongo module first
+```bash
+npm install mongodb --save
+```
+
+```js
+import { FuseDB, MongoAdapter } from "fusedb";
+FuseDB.setup({
+    adapter: MongoAdapter({
+        url : "mongodb://localhost:27017/fusedb",
+        dbName : "myProject"
+    })
+});
 ```
 
 ## Models
@@ -87,6 +104,36 @@ Count:
 
 ```js
 const num = await Author.find<Author>().count();
+```
+
+
+
+### Query normalization 
+
+#### ObjectID
+You don't need to convert strings to ObjectID When you using MongoAdapter. FuseDB does it for you.
+
+for example:
+
+```ts
+ const record = await Foo.findById<Foo>("5b290c188e9f69ab51c3bd41");
+```
+
+It will be applied for `find` method recursively for example
+
+```ts
+ await Foo.find<Foo>({
+     _id : $in : ["5b290c188e9f69ab51c3bd41", "5b290c188e9f69ab51c3bd42"]
+  }).first()
+```
+
+#### Passing real objects to query
+
+Instead of extracting IDs you can pass a real FuseDB Model to the query. For example
+
+```ts
+const group = await Group.find({name : "admin"}).first();
+const adminUsers = await Users.find({group : group}).all(); // will fetch all users that belong to admin group
 ```
 
 ### Chaining query

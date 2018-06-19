@@ -16,7 +16,7 @@ export function FileAdapter(opts: FileAdapterOptions) {
 
 export class FileAdapterImpl implements IAdapter {
     constructor(public opts: FileAdapterOptions) { }
-
+    close() { }
 
     public generateId(): string {
         return shortid.generate()

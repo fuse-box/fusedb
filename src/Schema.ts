@@ -60,6 +60,7 @@ export class Schema {
                         item.validator.validate(key, item.props, value);
                     }
                 }
+
                 values[key] = ensureDatabaseCorrectValues(value);
             }
         }

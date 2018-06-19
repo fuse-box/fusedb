@@ -1,6 +1,6 @@
 {
   "name": "fusedb",
-  "version": "1.0.8",
+  "version": "1.0.11",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "app-root-path": "^2.0.1",
     "fuse-box": "^3.1.0-next.16",
     "fuse-test-runner": "^1.0.16",
+    "mongodb": "^3.0.10",
     "run-sequence": "^2.2.0",
     "typescript": "^2.6.1",
     "uglify-es": "^3.2.2"

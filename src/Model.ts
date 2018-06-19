@@ -33,4 +33,9 @@ export class Model<T> {
         const Cls = new this();
         return Cls.$fusedb.find(opts) as ActiveQuery<T>;
     }
+
+    public static findById<T>(id: any): Promise<Model<T>> {
+        const Cls = new this();
+        return Cls.$fusedb.find({ _id: id }).first()
+    }
 }

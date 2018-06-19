@@ -1,4 +1,5 @@
 export interface IAdapter {
+    close(): void;
     generateId(): any;
     count(collection: string, query: any): Promise<number>;
     fetch(opts: {
