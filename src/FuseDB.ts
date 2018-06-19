@@ -135,6 +135,21 @@ export class FuseDB {
     private getId() {
         return this.model["_id"];
     }
+
+    public toJSON() {
+        const collection = this.schema.getCollection();
+        const json = {};
+        for (const key in collection) {
+            const props = collection[key];
+            if (typeof props === "object") {
+                if (!props.hidden) {
+                    const hasToJson = typeof props.toJSON === "function";
+                    json[key] = hasToJson ? props.toJSON(this.model[key]) : this.model[key]
+                }
+            }
+        }
+        return json;
+    }
 }
 
 export let Config: Options = {

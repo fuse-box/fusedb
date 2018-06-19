@@ -7,7 +7,9 @@ const formatMetadataKey = Symbol("Field");
 
 export interface FieldType {
     cls?: typeof Model
-    name?: string
+    name?: string,
+    hidden?: boolean,
+    toJSON?: (value: any) => any;
 }
 export function Field(type?:
     string |

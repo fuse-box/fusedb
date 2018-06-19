@@ -84,6 +84,28 @@ await john.save();
 
 FuseDB will save references as `ids` and it won't store the entire model
 
+
+### Field decorator
+
+Field decorator has a few properties you might find useful
+
+#### hidden
+
+Hiding your field when sending to view
+```ts
+@Field({ hidden : true })
+public password: string;
+```
+
+#### toJSON
+Define custom serialiser when sending to view
+```ts
+@Field({ 
+    toJSON : value => moment(value).format("LLLL") 
+})
+public date: Date;
+```
+
 ### Finding
 
 First record:

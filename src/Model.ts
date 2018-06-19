@@ -38,4 +38,8 @@ export class Model<T> {
         const Cls = new this();
         return Cls.$fusedb.find({ _id: id }).first()
     }
+
+    public toJSON(): { [key: string]: any } {
+        return this.$fusedb.toJSON();
+    }
 }
