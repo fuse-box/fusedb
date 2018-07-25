@@ -23,7 +23,7 @@ export class CollectionTask {
     }
 
     public getById(id: any) {
-        return this.modelCollection.get(id);
+        return this.modelCollection.get(id.toString());
     }
 
     public map(record: any) {
@@ -43,7 +43,7 @@ export class CollectionTask {
         const q = query.find({ _id: { $in: [...this.ids] } })
 
         const models = await q.all();
-        models.forEach(model => this.modelCollection.set(model._id, model));
+        models.forEach(model => this.modelCollection.set(model._id.toString(), model));
     }
 }
 export class SubQuery {

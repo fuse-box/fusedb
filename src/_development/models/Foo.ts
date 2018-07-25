@@ -14,6 +14,9 @@ export class Foo extends Model<Foo> {
     @Field()
     public date: Date;
 
+    @Field()
+    public bars: Array<Bar>;
+
 
     async onBeforeSave() {
 

@@ -4,32 +4,48 @@ import { MongoAdapter } from '../adapters/MongoAdapter';
 import { FileAdapter } from '../adapters/FileAdapter';
 import * as path from "path";
 
-// FuseDB.setup({
-//     adapter: MongoAdapter({})
-// });
-
 FuseDB.setup({
-    adapter: FileAdapter({
-        path: path.resolve("./.db"),
-        database: "test"
-    })
+    adapter: MongoAdapter({})
 });
+
+// FuseDB.setup({
+//     adapter: FileAdapter({
+//         path: path.resolve("./.db"),
+//         database: "test"
+//     })
+// });
 
 async function test() {
     await Foo.drop()
     await Bar.drop()
+    const barData = [{ name: "oi" }, { name: "woi" }]
+    const bars = [];
+    for (const item of barData) {
+        const r = new Bar(item)
+        bars.push(r)
+        await r.save();
+    }
 
-    const foo = new Foo({
-        name: "hello201",
-        date: new Date(),
-        json: { foo: { bar: 1 } },
-        json2: ["123", { foo: "123" }]
-    });
-    await foo.save();
-    //console.log("foo", foo);
-    const bar = new Bar({ name: "oo", foo: foo })
-    await bar.save();
-    // const newRecord = await foo.save();
+    const firstFoo = new Foo({ name: "foo", bars: [] })
+    firstFoo.bars = bars;
+    await firstFoo.save()
+
+
+    const data = await Foo.find().with("bars", Bar).all();
+    console.log(data);
+    // await Bar.drop()
+
+    // const foo = new Foo({
+    //     name: "hello201",
+    //     date: new Date(),
+    //     json: { foo: { bar: 1 } },
+    //     json2: ["123", { foo: "123" }]
+    // });
+    // await foo.save();
+    // //console.log("foo", foo);
+    // const bar = new Bar({ name: "oo", foo: foo })
+    // await bar.save();
+    // // const newRecord = await foo.save();
 
 
     // foo.name = "bar";
