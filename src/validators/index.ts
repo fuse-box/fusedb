@@ -6,5 +6,6 @@ export function enableDefaultDecorators() {
     require("./EmailValidator");
     require("./RequiredValidator");
     require("./EnumValidator");
+    require("./PhoneValidator");
 }
 
