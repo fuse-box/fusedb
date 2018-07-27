@@ -45,7 +45,7 @@ export class Schema {
         });
     }
 
-    public toDatabase(instance: Model<any>): { [key: string]: any } {
+    public validate(instance: Model<any>) {
         const values: any = {};
         if (instance["_id"]) {
             values._id = instance["_id"]
@@ -66,13 +66,26 @@ export class Schema {
                         }
                     }
                 }
-                if (!errored) {
-                    values[key] = ensureDatabaseCorrectValues(value);
-                }
             }
         }
         if (Object.keys(errors).length) {
             throw { $fields: errors }
+        }
+    }
+
+    public toDatabase(instance: Model<any>, extraValidationRequired?: boolean): { [key: string]: any } {
+        if (extraValidationRequired) {
+            this.validate(instance);
+        }
+        const values: any = {};
+        if (instance["_id"]) {
+            values._id = instance["_id"]
+        }
+        for (let key in this.collection) {
+            if (key !== "_id") {
+                let value = instance[key];;
+                values[key] = ensureDatabaseCorrectValues(value);
+            }
         }
         return values;
     }

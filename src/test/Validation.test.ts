@@ -47,6 +47,12 @@ class RequiredModal extends Model<FooBarMin> {
     @Field() @Validate({ required: true })
     public n: string;
 
+    onBeforeSave() {
+        if (this.n === "you-should-fail") {
+            this.a = undefined;
+        }
+    }
+
 }
 export class ValidationTest {
     after() {
@@ -109,6 +115,27 @@ export class ValidationTest {
         } catch (e) {
             should(e.$fields).deepEqual({ a: 'This field required', n: 'This field required' });
         }
+    }
 
+    async "Should validate using required (failed because of onBeforeSave"() {
+        const record = new RequiredModal({ a: "1", n: 'you-should-fail' })
+        try {
+            await record.save();
+        } catch (e) {
+            should(e.$fields).deepEqual({ a: 'This field required' });
+        }
+    }
+
+    async "Should pass required validations"() {
+        const record = new RequiredModal({ a: "1", n: '2' })
+        try {
+            const response = await record.save();
+
+            should(record.a).equal("1")
+            should(record.n).equal("2")
+            should(record._id).beOkay();
+        } catch (e) {
+            throw "Shouldn't happen"
+        }
     }
 }

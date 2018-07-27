@@ -32,24 +32,29 @@ export class FuseDB {
     }
 
     public async saveRecord(): Promise<any> {
+        let extraValidationRequired = false;
+        this.schema.validate(this.model);
         if (typeof this.model['onBeforeSave'] === "function") {
+            extraValidationRequired = true;
             await this.model['onBeforeSave']();
         }
 
         if (this.model["_id"] !== undefined) {
             if (typeof this.model['onBeforeUpdate'] === "function") {
+                extraValidationRequired = true;
                 await this.model['onBeforeUpdate']();
             }
-            const record = this.updateRecord();
+            const record = this.updateRecord(extraValidationRequired);
             if (typeof this.model['onAfterSave'] === "function") {
                 await this.model['onAfterSave']();
             }
             return record;
         }
         if (typeof this.model['onBeforeCreate'] === "function") {
+            extraValidationRequired = true;
             await this.model['onBeforeCreate']();
         }
-        const record = await this.createRecord();
+        const record = await this.createRecord(extraValidationRequired);
 
         if (typeof this.model['onAfterSave'] === "function") {
             await this.model['onAfterSave']();
@@ -57,9 +62,9 @@ export class FuseDB {
         return record;
     }
 
-    public async updateRecord(): Promise<any> {
+    public async updateRecord(extraValidationRequired: boolean): Promise<any> {
         const adapter = this.getAdapter();
-        const response = await adapter.update(this.schema.name, this.model["_id"], this.schema.toDatabase(this.model));
+        const response = await adapter.update(this.schema.name, this.model["_id"], this.schema.toDatabase(this.model, extraValidationRequired));
         return this.model;
     }
 
@@ -108,7 +113,7 @@ export class FuseDB {
     }
 
 
-    public async createRecord(): Promise<any> {
+    public async createRecord(extraValidationRequired?: boolean): Promise<any> {
         const adapter = this.getAdapter();
         if (!this.model["_id"]) {
             const newId = adapter.generateId();
@@ -116,7 +121,7 @@ export class FuseDB {
                 this.model["_id"] = newId;
             }
         }
-        const response = await adapter.create(this.schema.name, this.schema.toDatabase(this.model))
+        const response = await adapter.create(this.schema.name, this.schema.toDatabase(this.model, extraValidationRequired))
         this.assignProps(response);
         return this.model;
     }
