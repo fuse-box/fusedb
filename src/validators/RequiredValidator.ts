@@ -8,7 +8,7 @@ export class RequiredValidator implements FieldValidator {
 
         const options = extractValidatorPropeties(props);
         options.message = options.message || `This field required`;
-        if (value === undefined) {
+        if (value === undefined || value === "") {
             throw new Error(options.message);
         }
     }
