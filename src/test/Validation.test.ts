@@ -39,6 +39,15 @@ class FooBarEmail extends Model<FooBarMin> {
     @Field() @Validate({ email: true })
     public name: string;
 }
+
+class RequiredModal extends Model<FooBarMin> {
+    @Field() @Validate({ required: true })
+    public a: string;
+
+    @Field() @Validate({ required: true })
+    public n: string;
+
+}
 export class ValidationTest {
     after() {
         stub.clear();
@@ -91,5 +100,15 @@ export class ValidationTest {
     async "Should validate email (ok)"() {
         const record = new FooBarEmail({ name: "foobar@gmail.com" })
         return record.save()
+    }
+
+    async "Should validate using required"() {
+        const record = new RequiredModal({})
+        try {
+            await record.save();
+        } catch (e) {
+            should(e.$fields).deepEqual({ a: 'This field required', n: 'This field required' });
+        }
+
     }
 }

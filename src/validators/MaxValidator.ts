@@ -7,7 +7,7 @@ export class MaxValidator implements FieldValidator {
     validate(field: string, props: any, value: any) {
 
         const options = extractValidatorPropeties(props);
-        options.message = options.message || `Field ${field} is required to be max ${options.value} symbols`;
+        options.message = options.message || `Can't be greater than ${options.value} symbols`;
         if (value === undefined || value.toString().length > options.value) {
             throw new Error(options.message);
         }

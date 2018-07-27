@@ -50,18 +50,29 @@ export class Schema {
         if (instance["_id"]) {
             values._id = instance["_id"]
         }
-
+        const errors: any = {};
         for (let key in this.collection) {
             if (key !== "_id") {
                 let value = instance[key];;
                 const validators = this.validators.get(key);
+                let errored = false;
                 if (this.validators.get(key)) {
                     for (const item of validators) {
-                        item.validator.validate(key, item.props, value);
+                        try {
+                            item.validator.validate(key, item.props, value);
+                        } catch (e) {
+                            errored = true;
+                            errors[key] = e.message || `Uknown error message while validating "${key}" property`;
+                        }
                     }
                 }
-                values[key] = ensureDatabaseCorrectValues(value);
+                if (!errored) {
+                    values[key] = ensureDatabaseCorrectValues(value);
+                }
             }
+        }
+        if (Object.keys(errors).length) {
+            throw { $fields: errors }
         }
         return values;
     }

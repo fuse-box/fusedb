@@ -3,17 +3,13 @@ import { FieldValidator } from "./FieldValidator";
 import { extractValidatorPropeties } from "./utils";
 
 @Validator()
-export class RegExpValidator implements FieldValidator {
+export class RequiredValidator implements FieldValidator {
     validate(field: string, props: any, value: any) {
+
         const options = extractValidatorPropeties(props);
-        options.message = options.message || `Wrong format`;
+        options.message = options.message || `This field required`;
         if (value === undefined) {
             throw new Error(options.message);
-        }
-        if (options.value instanceof RegExp) {
-            if (!options.value.test(value)) {
-                throw new Error(options.message);
-            }
         }
     }
 }
