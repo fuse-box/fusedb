@@ -14,12 +14,12 @@ export class CollectionTask {
     }
 
     public register(val: string | string[]) {
-        if (typeof val == "string") {
-            this.addId(val);
-        }
+        
         if (Array.isArray(val)) {
             val.forEach(id => this.addId(id))
+            return;
         }
+        this.addId(val.toString());
     }
 
     public getById(id: any) {
@@ -27,14 +27,12 @@ export class CollectionTask {
     }
 
     public map(record: any) {
-        if (typeof record == "string") {
-            return this.getById(record);
-        }
         if (Array.isArray(record)) {
             let newArray = [];
             record.forEach(id => newArray.push(this.getById(id)));
             return newArray;
         }
+        return this.getById(record.toString());
     }
 
     public async resolve() {

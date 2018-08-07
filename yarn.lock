@@ -832,9 +832,9 @@ fstream@^1.0.0, fstream@^1.0.10, fstream@^1.0.2:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-fuse-box@^3.1.0-next.16:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/fuse-box/-/fuse-box-3.2.2.tgz#88080d2b857870ec3e05301b3bc493f635d7079c"
+fuse-box@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/fuse-box/-/fuse-box-3.4.0.tgz#35a9c194d53b76d3818f38b7944540482a340c1d"
   dependencies:
     acorn "^5.1.2"
     acorn-jsx "^4.0.1"
@@ -853,6 +853,7 @@ fuse-box@^3.1.0-next.16:
     ieee754 "^1.1.8"
     inquirer "^3.0.6"
     lego-api "^1.0.7"
+    minimist "^1.2.0"
     mustache "^2.3.0"
     postcss "^6.0.1"
     pretty-time "^0.2.0"
