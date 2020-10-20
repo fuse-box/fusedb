@@ -1,21 +1,22 @@
+export interface IConnectedResult {
+  connected: boolean;
+  error?: any;
+}
 export interface IAdapter {
-    close(): void;
-    generateId(): any;
-    count(collection: string, query: any): Promise<number>;
-    fetch(opts: {
-        collection: string,
-        query: any,
-        limit?: number,
+  checkConnection(): Promise<IConnectedResult>;
+  close(): void;
+  count(collection: string, query: any): Promise<number>;
+  create(collection: string, data: any): Promise<{ [key: string]: any }>;
+  delete(collection: string, id: any): Promise<number>;
+  drop(collection: string): Promise<number>;
+  fetch(opts: {
+    collection: string;
+    limit?: number;
+    query: any;
 
-        skip?: number,
-        sort?: any
-    }): Promise<{ [key: string]: any }[]>
-    create(collection: string, data: any)
-        : Promise<{ [key: string]: any }>
-    update(collection: string, id: any, data: any)
-        : Promise<number>
-    delete(collection: string, id: any)
-        : Promise<number>
-    drop(collection: string)
-        : Promise<number>
+    skip?: number;
+    sort?: any;
+  }): Promise<{ [key: string]: any }[]>;
+  generateId(): any;
+  update(collection: string, id: any, data: any): Promise<number>;
 }

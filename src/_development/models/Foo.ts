@@ -30,4 +30,14 @@ export class Bar extends Model<Bar>{
 
     @Field()
     public foo: Foo;
+
+    @Field()
+    public subBars: Array<SubBar>;
+}
+
+
+export class SubBar extends Model<Bar>{
+    @Field()
+    public name: string;
+   
 }

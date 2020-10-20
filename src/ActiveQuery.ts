@@ -17,6 +17,7 @@ export class ActiveQuery<T> {
     }
 
     public find(query: any): ActiveQuery<T> {
+        this.query = this.query || {};
         query = query || {}
         for (let item in query) {
             this.query[item] = query[item]
@@ -29,7 +30,7 @@ export class ActiveQuery<T> {
         return this;
     }
 
-    public with(field: string, query: typeof Model | ActiveQuery<T>): ActiveQuery<T> {
+    public with(field: string, query: typeof Model | ActiveQuery<any>): ActiveQuery<T> {
         this.withConditions.set(field, query);
         return this;
     }

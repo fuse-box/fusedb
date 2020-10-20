@@ -45,8 +45,8 @@ export class CollectionTask {
 	public async resolve() {
 		let query: ActiveQuery<any> = this.withValue as ActiveQuery<any>;
 		//console.log(this.ids);
+		
 		const q = query.find({ _id: { $in: [...this.ids] } });
-
 		const models = await q.all();
 		models.forEach(model =>
 			this.modelCollection.set(model._id.toString(), model)

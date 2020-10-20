@@ -1,23 +1,19 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        "moduleResolution": "node",
+        "declaration": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
         "isolatedModules": false,
         "jsx": "react",
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "declaration": false,
+        "module": "commonjs",
+        "moduleResolution": "node",
         "noImplicitAny": false,
         "noImplicitUseStrict": false,
-        "removeComments": true,
-        "importHelpers": true,
         "noLib": false,
-        "lib": [
-            "es2015",
-            "dom"
-        ],
-        "outDir": "build/",
+        "removeComments": true,
+        "target": "esnext",
+       
         "noEmitHelpers": true,
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true

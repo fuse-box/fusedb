@@ -1,11 +1,12 @@
-import { Foo, Bar } from "./models/Foo";
-import { FuseDB } from '../FuseDB';
-import { MongoAdapter } from '../adapters/MongoAdapter';
-import { FileAdapter } from '../adapters/FileAdapter';
 import * as path from "path";
+import { ActiveQuery } from "../ActiveQuery";
+import { FuseDB } from "../FuseDB";
+import { FileAdapter } from "../adapters/FileAdapter";
+import { MongoAdapter } from "../adapters/MongoAdapter";
+import { Bar, Foo, SubBar } from "./models/Foo";
 
 FuseDB.setup({
-    adapter: MongoAdapter({})
+  adapter: MongoAdapter({}),
 });
 
 // FuseDB.setup({
@@ -16,52 +17,66 @@ FuseDB.setup({
 // });
 
 async function test() {
-    await Foo.drop()
-    await Bar.drop()
-    const barData = [{ name: "oi" }, { name: "woi" }]
-    const bars = [];
-    for (const item of barData) {
-        const r = new Bar(item)
-        bars.push(r)
-        await r.save();
-    }
+  //   await Foo.drop();
+  //   await Bar.drop();
+  //   await SubBar.drop();
+  //   const subBarData = [{ name: "sub1" }, { name: "sub2" }];
+  //   const subBars = [];
+  //   for (const item of subBarData) {
+  //     const r = new SubBar(item);
+  //     subBars.push(r);
+  //     await r.save();
+  //   }
 
-    const firstFoo = new Foo({ name: "foo", bars: [] })
-    firstFoo.bars = bars;
-    await firstFoo.save()
+  //   const barData = [{ name: "oi" }, { name: "woi" }];
+  //   const bars = [];
+  //   for (const item of barData) {
+  //     const r = new Bar(item);
+  //     r.subBars = subBars;
+  //     bars.push(r);
+  //     await r.save();
+  //   }
 
+  //   const firstFoo = new Foo({ bars: [], name: "foo" });
+  //   firstFoo.bars = bars;
+  //   await firstFoo.save();
 
-    const data = await Foo.find().with("bars", Bar).all();
-    console.log(data);
-    // await Bar.drop()
+  //   const data = await Foo.find<Foo>()
+  //     .with("bars", Bar.find().with("subBars", SubBar))
+  //     .all();
 
-    // const foo = new Foo({
-    //     name: "hello201",
-    //     date: new Date(),
-    //     json: { foo: { bar: 1 } },
-    //     json2: ["123", { foo: "123" }]
-    // });
-    // await foo.save();
-    // //console.log("foo", foo);
-    // const bar = new Bar({ name: "oo", foo: foo })
-    // await bar.save();
-    // // const newRecord = await foo.save();
+  //   data.map((item) => {
+  //     item.bars.map((item) => {
+  //       //console.log(item);
+  //     });
+  //   });
+  // await Bar.drop()
 
+  // const foo = new Foo({
+  //     name: "hello201",
+  //     date: new Date(),
+  //     json: { foo: { bar: 1 } },
+  //     json2: ["123", { foo: "123" }]
+  // });
+  // await foo.save();
+  // //console.log("foo", foo);
+  // const bar = new Bar({ name: "oo", foo: foo })
+  // await bar.save();
+  // // const newRecord = await foo.save();
 
-    // foo.name = "bar";
-    // await foo.save();
-    // const data = await Foo.find<Foo>({ _id: "5b290c1c0e173fab5a471baf" }).sort("date", "desc").first();
-    // console.log(data);
+  // foo.name = "bar";
+  // await foo.save();
+  // const data = await Foo.find<Foo>({ _id: "5b290c1c0e173fab5a471baf" }).sort("date", "desc").first();
+  // console.log(data);
 
-    const record = await Foo.findById<Foo>("5b290c188e9f69ab51c3bd41");
-    //  console.log(record);
+  setInterval(async () => {
+    const result = await FuseDB.checkConnection();
+    console.log(result);
+  }, 1000);
 
+  //  console.log(record);
 
-
-
-    //console.log(data[0].json);
-
-
+  //console.log(data[0].json);
 }
 
 test();
