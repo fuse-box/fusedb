@@ -1,43 +1,20 @@
-import { Model, Field } from '../../index';
-
+import { Field, Model } from "../../index";
 
 export class Foo extends Model<Foo> {
-    @Field()
-    public name: string;
+  @Field()
+  public name: string;
 
-    @Field()
-    public json: any;
+  @Field()
+  public json: any;
 
-    @Field()
-    public json2: any;
+  @Field()
+  public num: number;
 
-    @Field()
-    public date: Date;
+  @Field()
+  public json2: any;
 
-    @Field()
-    public bars: Array<Bar>;
+  @Field()
+  public date: Date;
 
-
-    async onBeforeSave() {
-
-    }
-
-}
-
-export class Bar extends Model<Bar>{
-    @Field()
-    public name: string;
-
-    @Field()
-    public foo: Foo;
-
-    @Field()
-    public subBars: Array<SubBar>;
-}
-
-
-export class SubBar extends Model<Bar>{
-    @Field()
-    public name: string;
-   
+  async onBeforeSave() {}
 }

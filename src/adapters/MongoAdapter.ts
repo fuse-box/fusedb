@@ -1,5 +1,5 @@
 import { ensureDatabaseCorrectValues, ensureValidMongoID } from "../Utils";
-import { IAdapter, IConnectedResult } from "./Adapter";
+import { IAdapter, IConnectedResult, IInsertManyResponse } from "./Adapter";
 const DATABASES = {};
 
 export interface MongoAdapterOptions {
@@ -79,11 +79,49 @@ export class MongoAdapterImpl implements IAdapter {
   }
 
   async count(name: string, query: any): Promise<number> {
-    const connection = await this.getConnection(name);
+    const connection = await this.getConnection();
     const collection = connection.db.collection(name);
     const q = collection.find(query ? ensureDatabaseCorrectValues(query) : {});
     const count = await q.count();
     return count;
+  }
+
+  async deleteMany(name: string, query: any): Promise<number> {
+    const connection = await this.getConnection();
+    const collection = connection.db.collection(name);
+    const q = await collection.deleteMany(
+      query ? ensureDatabaseCorrectValues(query) : {}
+    );
+    return q.deletedCount;
+  }
+
+  async insertMany(
+    name: string,
+    data: Array<Record<string, any>>
+  ): IInsertManyResponse {
+    const connection = await this.getConnection();
+    const collection = connection.db.collection(name);
+    const q = await collection.insertMany(data);
+
+    return { insertedCount: q.insertedCount, insertedIds: q.insertedIds };
+  }
+  async updateMany(
+    name: string,
+    query: any,
+    data: Record<string, any>
+  ): Promise<number> {
+    const connection = await this.getConnection();
+    const collection = connection.db.collection(name);
+    console.log(
+      "update many",
+      query ? ensureDatabaseCorrectValues(query) : {},
+      data
+    );
+    const q = await collection.updateMany(
+      query ? ensureDatabaseCorrectValues(query) : {},
+      { $set: data }
+    );
+    return q.matchedCount;
   }
 
   async fetch(opts: {
@@ -93,7 +131,7 @@ export class MongoAdapterImpl implements IAdapter {
     skip?: number;
     sort?: any;
   }): Promise<{ [key: string]: any }[]> {
-    const connection = await this.getConnection(opts.collection);
+    const connection = await this.getConnection();
     const collection = connection.db.collection(opts.collection);
     const q = collection.find(
       opts.query ? ensureDatabaseCorrectValues(opts.query) : {}
@@ -112,21 +150,21 @@ export class MongoAdapterImpl implements IAdapter {
   }
 
   async create(collection: string, doc: any): Promise<{ [key: string]: any }> {
-    const connection = await this.getConnection(collection);
+    const connection = await this.getConnection();
     let record = await connection.db.collection(collection).insertOne(doc);
     return record.ops[0];
   }
 
   async update(collection: string, id: any, doc: any): Promise<number> {
-    const connection = await this.getConnection(collection);
+    const connection = await this.getConnection();
     id = ensureValidMongoID(id);
     const _coll = connection.db.collection(collection);
-    const record = await _coll.update({ _id: id }, { $set: doc });
+    const record = await _coll.updateOne({ _id: id }, { $set: doc });
     return record.result.nModified;
   }
 
   async delete(collection: string, id: any): Promise<number> {
-    const connection = await this.getConnection(collection);
+    const connection = await this.getConnection();
     id = ensureValidMongoID(id);
     const _coll = connection.db.collection(collection);
     const record = await _coll.deleteOne({ _id: id });
@@ -134,7 +172,7 @@ export class MongoAdapterImpl implements IAdapter {
   }
 
   async drop(collection: string): Promise<number> {
-    const connection = await this.getConnection(collection);
+    const connection = await this.getConnection();
     const collections = await connection.db
       .listCollections({ name: collection })
       .toArray();

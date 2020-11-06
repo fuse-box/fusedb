@@ -5,8 +5,9 @@ import { Model } from "./Model";
 import { Schema } from "./Schema";
 import { SubQuery } from "./SubQuery";
 import { fastHash } from "./Utils";
-import { IAdapter } from "./adapters/Adapter";
+import { IAdapter, IInsertManyResponse } from "./adapters/Adapter";
 import { FileAdapter } from "./adapters/FileAdapter";
+import { MongoAdapter } from "./adapters/MongoAdapter";
 
 export interface Options {
   adapter?: IAdapter;
@@ -116,9 +117,45 @@ export class FuseDB {
     return response;
   }
 
+  public async delete(query: ActiveQuery<any>): Promise<number> {
+    const adapter = this.getAdapter();
+    const response = await adapter.count(this.schema.name, query.getQuery());
+    return response;
+  }
+
   public async remove(): Promise<number> {
     const adapter = this.getAdapter();
     const response = await adapter.delete(this.schema.name, this.getId());
+    return response;
+  }
+
+  public async deleteMany(query: ActiveQuery<any>): Promise<number> {
+    const adapter = this.getAdapter();
+    const response = await adapter.deleteMany(
+      this.schema.name,
+      query.getQuery()
+    );
+    return response;
+  }
+
+  public async updateMany(
+    query: ActiveQuery<any>,
+    data: Record<string, any>
+  ): Promise<number> {
+    const adapter = this.getAdapter();
+    const response = await adapter.updateMany(
+      this.schema.name,
+      query.getQuery(),
+      data
+    );
+    return response;
+  }
+
+  public async insertMany(
+    docs: Array<Record<string, any>>
+  ): IInsertManyResponse {
+    const adapter = this.getAdapter();
+    const response = await adapter.insertMany(this.schema.name, docs);
     return response;
   }
 
@@ -172,10 +209,13 @@ export class FuseDB {
     return json;
   }
 }
-
+const MONGO_URL = process.env.MONGO_URL || `mongodb://localhost:27017/test_db`;
 export let Config: Options = {
-  adapter: FileAdapter({
-    database: fastHash(path.dirname(process.cwd())).toString(),
-    path: path.join(os.homedir(), ".fusedb"),
+  adapter: MongoAdapter({
+    dbName: "test_db",
+    options: {
+      useUnifiedTopology: true,
+    },
+    url: MONGO_URL,
   }),
 };
